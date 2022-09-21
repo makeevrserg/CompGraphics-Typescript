@@ -1,5 +1,5 @@
 import BuffersInfo from "../base/BuffersInfo";
-import { CubesGL } from "./CubesGL";
+import {CubesGL} from "./Cubes";
 
 export default class CubeController {
     cubesGL!: CubesGL

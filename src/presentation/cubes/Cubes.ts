@@ -9,9 +9,9 @@ import { prepareScene } from "../utils/Utils";
 import CubeController from "./CubeController";
 import VertexShader from "./native/VertexShader.vert";
 import FragmentShader from "./native/FragmentShader.frag";
-class CubesGL extends WebGlStlTP { }
+export class CubesGL extends WebGlStlTP { }
 // Рисует зелёный треугольник
-export default class CubesPresentation extends IPresentation<CubesGL> {
+export class CubesPresentation extends IPresentation<CubesGL> {
     lazyWebGL = new Lazy(() => new CubesGL(getCanvas(), VertexShader, FragmentShader))
 
     convertorRGB(R: number, G: number, B: number) {

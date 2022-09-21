@@ -1,7 +1,7 @@
 import IPresentation from "./presentation/base/IPresentation";
-import CubesPresentation from "./presentation/cubes/Cubes";
-import { MonoSquarePresentation } from "./presentation/monosquare/MonoSquare";
-import { TrianglePresentation } from "./presentation/triangle/Triangle";
+import {CubesPresentation} from "./presentation/cubes/Cubes";
+import {MonoSquarePresentation} from "./presentation/monosquare/MonoSquare";
+import {TrianglePresentation} from "./presentation/triangle/Triangle";
 
 const monoSquarePresentation: IPresentation<any> = new MonoSquarePresentation();
 

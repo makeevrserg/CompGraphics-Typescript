@@ -1,25 +1,33 @@
 abstract class WebGlStlTP {
-    canvas: HTMLCanvasElement;
-    gl: WebGLRenderingContext;
-    triangleVerticesBuffer: WebGLBuffer;
+    canvas!: HTMLCanvasElement;
+    gl!: WebGLRenderingContext;
+    triangleVerticesBuffer!: WebGLBuffer;
     triangleVerticesBufferSize!: number; // the size of the buffer - necessary for drawing trinagleVerticesBuffer
     shaderProgram!: WebGLProgram;
     vertexPositionAttribute!: number;
     VertexShader!: string
     FragmentShader!: string
+
     constructor(canvas: HTMLCanvasElement, VertexShader: string, FragmentShader: string) {
         this.VertexShader = VertexShader;
         this.FragmentShader = FragmentShader
+        this.initCanvas(canvas)
+        this.initGL()
+        this.initShaders();
+        this.setVertices([]);
+        this.drawScene();
+    }
+
+    initCanvas(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.gl = canvas.getContext("webgl2", { preserveDrawingBuffer: true })!;
+    }
+
+    initGL() {
+        this.gl = this.canvas.getContext("webgl2", {preserveDrawingBuffer: true})!;
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.clearDepth(1.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
-        this.initShaders();
-        this.triangleVerticesBuffer = this.gl.createBuffer()!;
-        this.setVertices([]);
-        this.drawScene();
     }
 
     initShaders() {
@@ -51,6 +59,7 @@ abstract class WebGlStlTP {
     }
 
     setVertices(v: number[]) {
+        this.triangleVerticesBuffer = this.gl.createBuffer()!;
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.triangleVerticesBuffer);
         this.triangleVerticesBufferSize = v.length / 3;
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(v), this.gl.STATIC_DRAW);
@@ -69,9 +78,11 @@ abstract class WebGlStlTP {
 
 
 }
+
 function getCanvas(): HTMLCanvasElement {
     return document.querySelector("canvas") ?? <HTMLCanvasElement>document.getElementById("glcanvas")
 }
+
 export {
     WebGlStlTP, getCanvas
 }
