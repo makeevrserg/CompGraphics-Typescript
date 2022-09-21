@@ -4,11 +4,14 @@
 
 import BuffersInfo from "../base/BuffersInfo";
 import IPresentation from "../base/IPresentation";
+import Lazy from "../base/Lazy";
+import { getCanvas, WebGlStlTP } from "../base/WebGlStlTP";
 import { makeF32ArrayBuffer, prepareScene } from "../utils/Utils";
-import { LazyMonoSquare, MonoSquareGL } from "./MonoSquareGL";
-
+import VertexShader from "./native/VertexShader.vert";
+import FragmentShader from "./native/FragmentShader.frag";
+class MonoSquareGL extends WebGlStlTP { }
 export class MonoSquarePresentation extends IPresentation<MonoSquareGL> {
-    lazyWebGL = new LazyMonoSquare()
+    lazyWebGL = new Lazy(() => new MonoSquareGL(getCanvas(), VertexShader, FragmentShader))
 
     buffers!: BuffersInfo
 

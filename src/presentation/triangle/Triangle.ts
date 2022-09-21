@@ -4,12 +4,14 @@
 
 import BuffersInfo from "../base/BuffersInfo";
 import IPresentation from "../base/IPresentation";
-import { CubesGL } from "../cubes/CubesGL";
 import { makeF32ArrayBuffer, prepareScene } from "../utils/Utils";
-import { LazyTriangle } from "./TriangleGL";
-
-export class TrianglePresentation extends IPresentation<CubesGL> {
-    lazyWebGL = new LazyTriangle()
+import VertexShader from "./native/VertexShader.vert";
+import FragmentShader from "./native/FragmentShader.frag";
+import { getCanvas, WebGlStlTP } from "../base/WebGlStlTP";
+import Lazy from "../base/Lazy";
+class TriangleGL extends WebGlStlTP { }
+export class TrianglePresentation extends IPresentation<TriangleGL> {
+    lazyWebGL = new Lazy(() => new TriangleGL(getCanvas(), VertexShader, FragmentShader))
 
 
 

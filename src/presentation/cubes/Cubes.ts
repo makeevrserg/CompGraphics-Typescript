@@ -3,13 +3,16 @@
 import { mat4, vec3 } from 'gl-matrix'
 import BuffersInfo from "../base/BuffersInfo";
 import IPresentation from "../base/IPresentation";
+import Lazy from '../base/Lazy';
+import { getCanvas, WebGlStlTP } from '../base/WebGlStlTP';
 import { prepareScene } from "../utils/Utils";
 import CubeController from "./CubeController";
-import { CubesGL, LazyCubes } from "./CubesGL";
-
+import VertexShader from "./native/VertexShader.vert";
+import FragmentShader from "./native/FragmentShader.frag";
+class CubesGL extends WebGlStlTP { }
 // Рисует зелёный треугольник
 export default class CubesPresentation extends IPresentation<CubesGL> {
-    lazyWebGL = new LazyCubes()
+    lazyWebGL = new Lazy(() => new CubesGL(getCanvas(), VertexShader, FragmentShader))
 
     convertorRGB(R: number, G: number, B: number) {
         return [R / 255, G / 255, B / 255, 1]

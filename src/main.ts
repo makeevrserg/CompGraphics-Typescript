@@ -10,16 +10,7 @@ const trianglePresentation: IPresentation<any> = new TrianglePresentation();
 const cubesPresentation: IPresentation<any> = new CubesPresentation();
 
 
-const currentPresentation: IPresentation<any> = cubesPresentation;
-
-function onLoaded() {
-    console.log("onLoaded");
-}
-
-function onCanvasClicked() {
-    console.log("onClicked");
-    currentPresentation.onClicked()
-}
+const currentPresentation: IPresentation<any> = trianglePresentation;
 
 
 const canvas = document.querySelector("canvas")!
