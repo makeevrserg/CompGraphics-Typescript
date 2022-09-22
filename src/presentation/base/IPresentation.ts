@@ -1,7 +1,7 @@
 import Lazy from "./Lazy";
-import { WebGlStlTP } from "./WebGlStlTP";
+import { IRenderer } from "./IRenderer";
 
-export default abstract class IPresentation<T extends WebGlStlTP> {
+export default abstract class IPresentation<T extends IRenderer> {
     abstract lazyWebGL: Lazy<T>
 
     get webGL(): T {
@@ -9,8 +9,6 @@ export default abstract class IPresentation<T extends WebGlStlTP> {
     }
 
     abstract onLoaded(): void
-
-    abstract onClicked(): void
 
     abstract prepareScene(): void
 

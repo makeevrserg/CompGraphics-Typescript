@@ -7,18 +7,15 @@ import IPresentation from "../base/IPresentation";
 import { makeF32ArrayBuffer, prepareScene } from "../utils/Utils";
 import VertexShader from "./native/VertexShader.vert";
 import FragmentShader from "./native/FragmentShader.frag";
-import { getCanvas, WebGlStlTP } from "../base/WebGlStlTP";
+import { getCanvas, IRenderer } from "../base/IRenderer";
 import Lazy from "../base/Lazy";
-class TriangleGL extends WebGlStlTP { }
+class TriangleGL extends IRenderer { }
 export class TrianglePresentation extends IPresentation<TriangleGL> {
     lazyWebGL = new Lazy(() => new TriangleGL(getCanvas(), VertexShader, FragmentShader))
 
 
 
     buffers!: BuffersInfo
-
-    onClicked(): void {
-    }
 
     onLoaded(): void {
 

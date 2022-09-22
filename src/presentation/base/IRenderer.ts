@@ -1,61 +1,70 @@
-abstract class WebGlStlTP {
+abstract class IRenderer {
     canvas!: HTMLCanvasElement;
     gl!: WebGLRenderingContext;
     triangleVerticesBuffer!: WebGLBuffer;
     triangleVerticesBufferSize!: number; // the size of the buffer - necessary for drawing trinagleVerticesBuffer
     shaderProgram!: WebGLProgram;
     vertexPositionAttribute!: number;
-    VertexShader!: string
-    FragmentShader!: string
 
-    constructor(canvas: HTMLCanvasElement, VertexShader: string, FragmentShader: string) {
-        this.VertexShader = VertexShader;
-        this.FragmentShader = FragmentShader
-        this.initCanvas(canvas)
-        this.initGL()
-        this.initShaders();
-        this.setVertices([]);
-        this.drawScene();
+    defaultVertexShader!: string
+    defaultFragmentShader!: string
+
+    constructor(canvas: HTMLCanvasElement, defaultVertexShader: string, defaultFragmentShader: string) {
+        this.defaultVertexShader = defaultVertexShader;
+        this.defaultFragmentShader = defaultFragmentShader
+        this.buildCanvas(canvas)
+        this.buildGL()
+        this.buildShaderProgram();
+        this.setupDefaultFragmentShader()
+        this.setupDefaultVertexShader()
+        this.setupShaderProgram()
+        this.buildVertexPositionAttribute();
+        // this.setVertices([]);
+        // this.drawScene();
     }
 
-    initCanvas(canvas: HTMLCanvasElement) {
+    buildCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
         this.canvas = canvas;
+        return canvas
     }
 
-    initGL() {
+    buildGL(): WebGLRenderingContext {
         this.gl = this.canvas.getContext("webgl2", {preserveDrawingBuffer: true})!;
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
         this.gl.clearDepth(1.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
+        return this.gl;
     }
 
-    initShaders() {
-        let fragmentShader = this.gl.createShader(this.gl.FRAGMENT_SHADER)!;
-        this.gl.shaderSource(fragmentShader, this.FragmentShader);
-        this.gl.compileShader(fragmentShader);
-        if (!this.gl.getShaderParameter(fragmentShader, this.gl.COMPILE_STATUS)) {
-            alert("An error occurred compiling fragmentShader: " + this.gl.getShaderInfoLog(fragmentShader));
-            return null;
-        }
-        let vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER)!;
-        this.gl.shaderSource(vertexShader, this.VertexShader);
-        this.gl.compileShader(vertexShader);
-        if (!this.gl.getShaderParameter(vertexShader, this.gl.COMPILE_STATUS)) {
-            alert("An error occurred compiling vertexShader: " + this.gl.getShaderInfoLog(vertexShader));
-            return null;
-        }
+    buildShaderProgram(): WebGLProgram {
         this.shaderProgram = this.gl.createProgram()!;
-        this.gl.attachShader(this.shaderProgram, vertexShader);
-        this.gl.attachShader(this.shaderProgram, fragmentShader);
-        this.gl.linkProgram(this.shaderProgram);
-        if (!this.gl.getProgramParameter(this.shaderProgram, this.gl.LINK_STATUS)) {
-            alert("Unable to initialize the shader program: " + this.gl.getProgramInfoLog(this.shaderProgram));
-        }
-        this.gl.useProgram(this.shaderProgram);
+        return this.shaderProgram;
+    }
 
+    setupDefaultFragmentShader(){
+        let fragmentShader = this.gl.createShader(this.gl.FRAGMENT_SHADER)!;
+        this.gl.shaderSource(fragmentShader, this.defaultFragmentShader);
+        this.gl.compileShader(fragmentShader);
+        this.gl.attachShader(this.shaderProgram, fragmentShader);
+    }
+
+    setupDefaultVertexShader(){
+        let vertexShader = this.gl.createShader(this.gl.VERTEX_SHADER)!;
+        this.gl.shaderSource(vertexShader, this.defaultVertexShader);
+        this.gl.compileShader(vertexShader);
+        this.gl.attachShader(this.shaderProgram, vertexShader);
+    }
+
+    setupShaderProgram(){
+        this.gl.linkProgram(this.shaderProgram);
+        this.gl.useProgram(this.shaderProgram);
+    }
+
+    buildVertexPositionAttribute(): number {
         this.vertexPositionAttribute = this.gl.getAttribLocation(this.shaderProgram, "vertexPosition");
         this.gl.enableVertexAttribArray(this.vertexPositionAttribute);
+        return this.vertexPositionAttribute
     }
 
     setVertices(v: number[]) {
@@ -84,5 +93,5 @@ function getCanvas(): HTMLCanvasElement {
 }
 
 export {
-    WebGlStlTP, getCanvas
+    IRenderer, getCanvas
 }

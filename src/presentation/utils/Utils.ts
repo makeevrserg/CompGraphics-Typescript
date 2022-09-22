@@ -1,5 +1,5 @@
 import BuffersInfo from "../base/BuffersInfo"
-import { WebGlStlTP } from "../base/WebGlStlTP"
+import { IRenderer } from "../base/IRenderer"
 
 export function makeF32ArrayBuffer(gl: WebGLRenderingContext, array: number[]): WebGLBuffer {
     // Создаём буфер
@@ -14,7 +14,7 @@ export function makeF32ArrayBuffer(gl: WebGLRenderingContext, array: number[]): 
     return buffer
 }
 
-export function prepareScene( webGL: WebGlStlTP, buffers: BuffersInfo) {
+export function prepareScene(webGL: IRenderer, buffers: BuffersInfo) {
     // Чистим экран
     const gl = webGL.gl
 

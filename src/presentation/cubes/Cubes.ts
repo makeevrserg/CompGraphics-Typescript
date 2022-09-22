@@ -4,12 +4,12 @@ import { mat4, vec3 } from 'gl-matrix'
 import BuffersInfo from "../base/BuffersInfo";
 import IPresentation from "../base/IPresentation";
 import Lazy from '../base/Lazy';
-import { getCanvas, WebGlStlTP } from '../base/WebGlStlTP';
+import { getCanvas, IRenderer } from '../base/IRenderer';
 import { prepareScene } from "../utils/Utils";
 import CubeController from "./CubeController";
 import VertexShader from "./native/VertexShader.vert";
 import FragmentShader from "./native/FragmentShader.frag";
-export class CubesGL extends WebGlStlTP { }
+export class CubesGL extends IRenderer { }
 // Рисует зелёный треугольник
 export class CubesPresentation extends IPresentation<CubesGL> {
     lazyWebGL = new Lazy(() => new CubesGL(getCanvas(), VertexShader, FragmentShader))
@@ -21,9 +21,6 @@ export class CubesPresentation extends IPresentation<CubesGL> {
     controller!: CubeController
 
     buffers!: BuffersInfo
-
-    onClicked(): void {
-    }
 
     onLoaded(): void {
         this.controller = new CubeController(this.webGL);
